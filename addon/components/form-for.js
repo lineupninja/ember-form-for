@@ -41,11 +41,15 @@ const FormForComponent = Component.extend({
   handleErrors(object) {
     let errors = get(object, 'errors');
 
-    if (errors) {
+    if (Array.isArray(errors) && errors.length > 0) {
       for (let propertyName in errors) {
         if (isPresent(get(errors, propertyName))) {
           set(this, 'tabindex', -1);
-          schedule('afterRender', () => this.$().focus());
+          schedule('afterRender', () => { 
+            if (this.$()) {
+              this.$().focus(); 
+            } 
+          });
           break;
         }
       }
